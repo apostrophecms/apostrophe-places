@@ -1,0 +1,31 @@
+{
+  "name": "apostrophe-places",
+  "version": "0.6.0",
+  "description": "Geocoded location content type for the Apostrophe content management system. Has google maps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:punkave/apostrophe-places.git"
+  },
+  "keywords": [
+    "map",
+    "geocode",
+    "locations",
+    "places",
+    "apostrophe",
+    "cms",
+    "mapping",
+    "punkave"
+  ],
+  "author": "P'unk Avenue LLC",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.5.2",
+    "lodash": "^4.6.1",
+    "geocoder": "~0.2.2",
+    "limiter": "~1.0.3",
+  }
+}
