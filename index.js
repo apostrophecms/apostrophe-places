@@ -7,10 +7,10 @@ module.exports = {
   label: 'Place',
   extend: 'apostrophe-pieces',
   
-  // moogBundle: {
-  //   modules: ['apostrophe-places-pages', 'apostrophe-places-widgets'],
-  //   directory: 'lib/modules'
-  // },
+  moogBundle: {
+    modules: ['apostrophe-places-pages', 'apostrophe-places-widgets'],
+    directory: 'lib/modules'
+  },
 
   beforeConstruct: function(self, options) {
     options.sort = { title: 1 };
@@ -27,7 +27,7 @@ module.exports = {
 
     self.find = function(req, criteria, projection) {
       var cursor = superFind(req, criteria, projection);
-      // require('./lib/cursor')(self, cursor);
+      require('./lib/cursor')(self, cursor);
       return cursor;
     };
 
