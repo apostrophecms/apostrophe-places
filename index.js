@@ -1,5 +1,6 @@
 var _ = require('lodash')
-  , async = require('async');
+  , async = require('async')
+  // , geocoder = require('./lib/geocoder');
 
 module.exports = {
   name: 'apostrophe-place',
@@ -15,10 +16,16 @@ module.exports = {
   beforeConstruct: function(self, options) {
     options.sort = { title: 1 };
 
-    options.addFields = [].concat(options.addFields || []);
+    options.addFields = [
+      {
+        name: 'address',
+        label: 'Address',
+        type: 'string'
+      }
+    ].concat(options.addFields || []);
 
     options.arrangeFields = _.merge([
-      { name: 'basic', label: 'Basics', fields: ['title', 'slug'] },
+      { name: 'basic', label: 'Basics', fields: ['title', 'slug', 'address'] },
     ], options.arrangeFields || []);
   },
 
@@ -36,5 +43,14 @@ module.exports = {
     self.extendAutocompleteCursor = function(cursor) {
       // return cursor.upcoming(true);
     };
+
+    console.log(self.apos.docs);
+
+    // self.geocoder = geocoder(_.defaults(options, { 
+    //   instance: self.name,
+    //   apos: self.apos
+    // }));
+
+
   },
 };
