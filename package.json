@@ -4,7 +4,7 @@
   "description": "Geocoded location content type for the Apostrophe content management system. Has google maps.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ln -s ../ node_modules/apostrophe-places && git mocha test/test.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,10 @@
     "async": "^1.5.2",
     "lodash": "^4.6.1",
     "geocoder": "~0.2.2",
-    "limiter": "~1.0.3"
+    "moment": "^2.12.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.x",
+    "apostrophe": "git://github.com/punkave/apostrophe.git#unstable"
   }
 }

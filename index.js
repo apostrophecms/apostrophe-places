@@ -1,6 +1,6 @@
 var _ = require('lodash')
   , async = require('async')
-  // , geocoder = require('./lib/geocoder');
+  , geocoder = require('./lib/geocoder');
 
 module.exports = {
   name: 'apostrophe-place',
@@ -44,13 +44,15 @@ module.exports = {
       // return cursor.upcoming(true);
     };
 
-    console.log(self.apos.docs);
+    self.geocoder = geocoder({
+      rateLimit: options.rateLimit,
+      dailyLimit: options.dailyLimit,
+      instance: self.name,
+      apos: self.apos
+    });
 
-    // self.geocoder = geocoder(_.defaults(options, { 
-    //   instance: self.name,
-    //   apos: self.apos
-    // }));
-
-
-  },
+    self.beforeSave = function(req, piece, callback) {
+      return self.geocoder.geocodePiece(piece, true, callback);
+    };
+  }
 };
