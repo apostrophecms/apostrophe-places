@@ -1,0 +1,23 @@
+.apos-map-marker
+{
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: white;
+  top: -7px;
+  // left: 10px;
+  
+  &::after
+  {
+    content: '';
+    display: block;
+    
+    position: absolute;
+    bottom: -15px;
+    border: 5px solid transparent;
+    border-top: 10px solid white;
+    
+    left: 50%;
+    margin-left: -5px;
+  }
+}
