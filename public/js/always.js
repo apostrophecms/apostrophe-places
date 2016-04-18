@@ -115,8 +115,6 @@ apos.define('apostrophe-places-map', {
         // we need to do this because calling .trigger('filter', Array)
         // passes the array items as arguments, instead of as an array.
         var filterBy = Array.prototype.slice.call(arguments, 1);
-
-        console.log('filter', filterBy)
         // if the only argument supplied is the string "all",
         // pass it through as a string.
         if(filterBy.length == 1 && filterBy[0] == 'all') {
@@ -234,7 +232,7 @@ apos.define('apostrophe-places-map', {
       self.generateMarker(item, map);
 
       var selector = '[data-location-id="' + item._id + '"]';
-      $(selector).click(function() {
+      $('body').on('click', selector, function() {
         self.activateInfoBox(item, map);
         return false;
       });
@@ -445,11 +443,3 @@ apos.define('apostrophe-places-map', {
     apos.places = self;
   }
 });
-
-  $(function() {
-    $('body').on('click', '[data-map-filter]', function(e) {
-      console.log('test filtering');
-      $('#apostrophe-google-map').trigger('filter', $(this).attr('data-filter'));
-    });
-  });
-
