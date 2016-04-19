@@ -18,9 +18,9 @@ module.exports = {
     self.pushAsset('stylesheet', 'map', { when: 'always' });
 
     // Set up our route for serving
-    self.apos.app.post('/infoBox', function(req, res) {
+    self.apos.app.post(self.action + '/infoBox', function(req, res) {
       return res.send(self.render(req, '_infoBox', { item: req.body }));
-    });
+    }); 
   },
 
   beforeConstruct: function(self, options) {

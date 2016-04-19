@@ -30,7 +30,7 @@ apos.define('apostrophe-places-map', {
       // If the API has loaded, go ahead and initialize
       // the map straight away.
       if(self.googleLoading && self.googleLoaded) {
-        self.initializeMap(map);
+        self.initializeMap(options);
       }      
     }
 
@@ -134,7 +134,6 @@ apos.define('apostrophe-places-map', {
         return self.renderItem(item, map);
       });
     };
-
 
     /*
     // THE DIRTY WORK 
@@ -278,7 +277,7 @@ apos.define('apostrophe-places-map', {
     // See map/index.js for the original. Pruning is necessary to avoid
     // sending a zillion megabytes per page to the browser
 
-    self.generateInfoBox = function(item, callback) {
+    self.generateInfoBox = function(item, map, callback) {
       if(item.infoBox) {
         return callback(null);
       }
@@ -288,7 +287,7 @@ apos.define('apostrophe-places-map', {
       var locationPiece = _.cloneDeep(item);
       delete locationPiece.marker;
 
-      $.post('/infoBox', locationPiece).done(function(markup) {
+      $.post(map.action + '/infoBox', locationPiece).done(function(markup) {
         var boxOptions = {
           content: markup,
           disableAutoPan: false,
@@ -311,7 +310,7 @@ apos.define('apostrophe-places-map', {
     self.activateInfoBox = function(item, map) {
       self.allItemsInactive(map);
 
-      return self.generateInfoBox(item, function() {
+      return self.generateInfoBox(item, map, function() {
         item.infoBox.open(map.googleMap, item.marker);
         item.marker.content.firstChild.className += " active";
       });
