@@ -288,7 +288,7 @@ apos.define('apostrophe-places-map', {
       var locationPiece = _.cloneDeep(item);
       delete locationPiece.marker;
 
-      $.get('/infoBox', locationPiece).done(function(markup) {
+      $.post('/infoBox', locationPiece).done(function(markup) {
         var boxOptions = {
           content: markup,
           disableAutoPan: false,

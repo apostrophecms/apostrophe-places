@@ -18,8 +18,8 @@ module.exports = {
     self.pushAsset('stylesheet', 'map', { when: 'always' });
 
     // Set up our route for serving
-    self.apos.app.get('/infoBox', function(req, res) {
-      return res.send(self.render(req, '_infoBox', { item: req.query }));
+    self.apos.app.post('/infoBox', function(req, res) {
+      return res.send(self.render(req, '_infoBox', { item: req.body }));
     });
   },
 
