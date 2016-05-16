@@ -11,7 +11,7 @@ apos.define('apostrophe-places-map', {
     self.googleLoaded = false;
 
     self.addMap = function(options) {
-      // Load Google maps API and extra libraries if needed. 
+      // Load Google maps API and extra libraries if needed.
       if(!self.googleLoading) {
         self.mapsToLoad.push(options);
         return self.loadGoogleMapsAndLibraries(function() {
@@ -31,7 +31,7 @@ apos.define('apostrophe-places-map', {
       // the map straight away.
       if(self.googleLoading && self.googleLoaded) {
         self.initializeMap(options);
-      }      
+      }
     }
 
     self.loadGoogleMapsAndLibraries = function(callback) {
@@ -41,7 +41,7 @@ apos.define('apostrophe-places-map', {
       return async.series([
         self.loadGoogleMaps,
         self.loadGoogleCodeLibraries,
-      ], callback); 
+      ], callback);
     }
 
     self.initializeMaps = function(callback) {
@@ -72,7 +72,7 @@ apos.define('apostrophe-places-map', {
     };
 
     self.configureMap = function(map, callback) {
-      // Make sure we have SOME default 'filterBy' and center point set 
+      // Make sure we have SOME default 'filterBy' and center point set
       // even though the map will auto-center itself around the markers.
       _.defaults(map.options, {
         infoBox: true,
@@ -84,7 +84,7 @@ apos.define('apostrophe-places-map', {
       });
 
       map.$el = $('#' + map.id); // the jQuery element
-      map.el = map.$el[0]; // the plain DOM element 
+      map.el = map.$el[0]; // the plain DOM element
       map.filterBy = map.options.filterBy;
 
       map.googleMap = new google.maps.Map(map.el, {
@@ -122,7 +122,7 @@ apos.define('apostrophe-places-map', {
         }
 
         return self.filter(filterBy, map);
-      }); 
+      });
 
       return callback(null);
     };
@@ -136,7 +136,7 @@ apos.define('apostrophe-places-map', {
     };
 
     /*
-    // THE DIRTY WORK 
+    // THE DIRTY WORK
     */
     self.loadGoogleMaps = function(callback) {
       // Load dynamically but only if it wasn't already loaded in base.html
@@ -202,8 +202,8 @@ apos.define('apostrophe-places-map', {
       script.type = 'text/javascript';
       script.src = src;
       document.body.appendChild(script);
-    };  
-  
+    };
+
     // Geocode an item if needed
     self.geocodeOne = function(item, callback) {
       if ((!item.geo) && (item.address)) {
@@ -282,7 +282,7 @@ apos.define('apostrophe-places-map', {
         return callback(null);
       }
 
-      // Clone the piece and remove the marker object, which will not 
+      // Clone the piece and remove the marker object, which will not
       // play nicely with the the ajax request
       var locationPiece = _.cloneDeep(item);
       delete locationPiece.marker;
@@ -416,10 +416,16 @@ apos.define('apostrophe-places-map', {
       });
 
       if (count > 1) {
-        map.googleMap.fitBounds(bounds);
+        self.fitBounds(map, bounds);
       } else if (count === 1) {
         map.googleMap.setZoom(15);
       }
+    };
+
+    // Make this overridable in case we want a
+    // different zoom level to be default.
+    self.fitBounds = function(map, bounds) {
+      map.googleMap.fitBounds(bounds);
     };
 
     // Revert to whatever we had initially (for filtering by "all")
