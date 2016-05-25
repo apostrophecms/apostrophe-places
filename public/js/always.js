@@ -1,4 +1,4 @@
-t puapos.define('apostrophe-places-map', {
+apos.define('apostrophe-places-map', {
   extend: 'apostrophe-context',
 
   afterConstruct: function(self) {
@@ -416,17 +416,19 @@ t puapos.define('apostrophe-places-map', {
       });
 
       if (count > 1) {
-        self.fitBounds(map, bounds);
+         self.fitBounds(map, bounds);
+         map.googleMap.fitBounds(bounds);
       } else if (count === 1) {
         map.googleMap.setZoom(15);
       }
     };
 
-    // Make this overridable in case we want a
-    // different zoom level to be default.
-    self.fitBounds = function(map, bounds) {
-      map.googleMap.fitBounds(bounds);
-    };
+     // Make this overridable in case we want a
+     // different zoom level to be default.
+     self.fitBounds = function(map, bounds) {
+       map.googleMap.fitBounds(bounds);
+     };
+
 
     // Revert to whatever we had initially (for filtering by "all")
     self.resetZoom = function(map) {
