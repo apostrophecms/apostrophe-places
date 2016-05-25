@@ -1,4 +1,4 @@
-apos.define('apostrophe-places-map', {
+t puapos.define('apostrophe-places-map', {
   extend: 'apostrophe-context',
 
   afterConstruct: function(self) {
@@ -249,7 +249,7 @@ apos.define('apostrophe-places-map', {
 
       var coords;
       // If the address is already a coordinate pair ignore any geocoding result and use it directly
-      if (item.address.match(/^[\-\+0-9\.\,\ ]+$/)) {
+      if (item.address && item.address.match(/^[\-\+0-9\.\,\ ]+$/)) {
         var rawCoords = item.address.split(/,\s*/);
         coords = new google.maps.LatLng(parseFloat(rawCoords[0]), parseFloat(rawCoords[1]));
       } else {
