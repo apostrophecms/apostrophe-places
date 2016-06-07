@@ -7,7 +7,7 @@ module.exports = {
   alias: 'places',
   label: 'Place',
   extend: 'apostrophe-pieces',
-  
+
   moogBundle: {
     modules: ['apostrophe-places-pages', 'apostrophe-places-widgets'],
     directory: 'lib/modules'
@@ -17,10 +17,12 @@ module.exports = {
     self.pushAsset('script', 'always', { when: 'always' });
     self.pushAsset('stylesheet', 'map', { when: 'always' });
 
+    self.apos.push.browserCall('always', 'apos.create("apostrophe-places-map", ?)', { name: self.name });
+
     // Set up our route for serving
     self.apos.app.post(self.action + '/infoBox', function(req, res) {
       return res.send(self.render(req, '_infoBox', { item: req.body }));
-    }); 
+    });
   },
 
   beforeConstruct: function(self, options) {
@@ -63,7 +65,7 @@ module.exports = {
     };
 
     // limit the results of autocomplete for joins
-    // so they only include 
+    // so they only include
     self.extendAutocompleteCursor = function(cursor) {
       // return cursor.upcoming(true);
     };

@@ -447,6 +447,6 @@ apos.define('apostrophe-places-map', {
       }
     };
 
-    apos.places = self;
+    apos[options.name] = self;
   }
 });
