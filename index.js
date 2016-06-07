@@ -17,7 +17,7 @@ module.exports = {
     self.pushAsset('script', 'always', { when: 'always' });
     self.pushAsset('stylesheet', 'map', { when: 'always' });
 
-    self.apos.push.browserCall('always', 'apos.create("apostrophe-places-map", ?)', { name: self.name });
+    self.apos.push.browserCall('always', 'apos.create("apostrophe-places-map", ?)', { name: self.__meta.name });
 
     // Set up our route for serving
     self.apos.app.post(self.action + '/infoBox', function(req, res) {
