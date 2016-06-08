@@ -244,8 +244,7 @@ apos.define('apostrophe-places-map', {
     };
 
     self.generateMarker = function(item, map) {
-      var markerHTML = document.createElement('DIV');
-          markerHTML.innerHTML = '<div class="apos-map-marker '+ apos.utils.cssName(item.category || '') +'"></div>';
+      var markerHTML = self.generateMarkerHTML(item);
 
       var coords;
       // If the address is already a coordinate pair ignore any geocoding result and use it directly
@@ -269,6 +268,14 @@ apos.define('apostrophe-places-map', {
 
       marker.locTypes = item.tags;
       item.marker = marker;
+    };
+
+    // Overridable hook to provide project level map marker.
+
+    self.generateMarkerHTML = function(item) {
+      var markerHTML = document.createElement('DIV');
+          markerHTML.innerHTML = '<div class="apos-map-marker '+ apos.utils.cssName(item.category || '') +'"></div>';
+      return markerHTML;
     };
 
     // IMPORTANT: if you want more properties to be visible here, make sure
