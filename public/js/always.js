@@ -37,7 +37,7 @@ apos.define('apostrophe-places-map', {
     self.loadGoogleMapsAndLibraries = function(callback) {
       self.googleLoading = true;
       // Load the Google Maps API and any additional libraries only once
-      console.log('MAPS: Loading google API and libraries');
+      // console.log('MAPS: Loading google API and libraries');
       return async.series([
         self.loadGoogleMaps,
         self.loadGoogleCodeLibraries,
@@ -45,7 +45,7 @@ apos.define('apostrophe-places-map', {
     }
 
     self.initializeMaps = function(callback) {
-      console.log('MAPS: APIs Loaded. Configuring maps.');
+      // console.log('MAPS: APIs Loaded. Configuring maps.');
       return async.each(self.mapsToLoad, function(map, callback) {
         self.initializeMap(map);
       }, callback);
@@ -149,7 +149,7 @@ apos.define('apostrophe-places-map', {
         };
         // apos.log('maps: dynamically loading google maps API');
         // Google will call aposGoogleMapApiReady for us
-        self.addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry&sensor=false&callback=aposGoogleMapApiReady');
+        self.addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry&sensor=false&callback=aposGoogleMapApiReady&key=' + self.options.key);
       }
     };
 
@@ -158,7 +158,7 @@ apos.define('apostrophe-places-map', {
     // until we see that they have defined something.
 
     self.loadGoogleCodeLibraries = function(callback) {
-      console.log('maps: google maps API ready, loading more libraries');
+      // console.log('maps: google maps API ready, loading more libraries');
 
       var load = self.options.googleCodeLibraries || [
         {
@@ -454,6 +454,7 @@ apos.define('apostrophe-places-map', {
       }
     };
 
-    apos[options.name] = self;
+    apos.maps = apos.maps || {};
+    apos.maps[options.name] = self;
   }
 });
