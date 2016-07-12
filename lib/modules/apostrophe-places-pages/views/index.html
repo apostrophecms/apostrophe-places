@@ -2,7 +2,10 @@
 {% block title %}{{ data.page.title }}{% endblock %}
 
 {% block main %}
-  <div id="apostrophe-google-map" style="width: 500px; height: 500px;"></div>
+  {# You'll want to override this template at project level. These explicit styles #}
+  {# are here to remind you that if you don't specify width and height for a google #}
+  {# map, it disappears completely. #}
+  <div id="{{ data.mapId }}" style="width: 500px; height: 500px;"></div>
 
   {% for piece in data.pieces %}
     <h4><a href="{{ piece._url }}">{{ piece.title }}</a></h4>

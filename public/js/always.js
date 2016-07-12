@@ -83,7 +83,7 @@ apos.define('apostrophe-places-map', {
         }
       });
 
-      map.$el = $('#' + map.id); // the jQuery element
+      map.$el = $(map.sel); // the jQuery element
       map.el = map.$el[0]; // the plain DOM element
       map.filterBy = map.options.filterBy;
 
