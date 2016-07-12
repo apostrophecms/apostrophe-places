@@ -38,9 +38,16 @@ module.exports = {
     _.each(tools, function(tool) {
       self.apos.push.browserMirrorCall('always', self, { 'tool': tool, stop: 'apostrophe-places' });
       var _options = (self.options && self.options[tool] && self.options[tool].browser) || {};
+
+      // Otherwise there's really only one when multiple subclasses are
+      // in play. TODO consider whether this makes self-documenting
+      // options a bad idea when they are objects
+
+      _options = _.cloneDeep(_options);
       _.defaults(_options, {
         name: self.__meta.name
       });
+
       self.apos.push.browserCall('always', 'apos.create(? + "-" + ?, ?)', self.__meta.name, tool, _options);
     });
 
