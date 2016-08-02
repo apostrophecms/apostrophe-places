@@ -82,11 +82,7 @@ module.exports = {
       pruneMapLocations: self.pruneMapLocations
     });
 
-    self.find = function(req, criteria, projection) {
-      var cursor = superFind(req, criteria, projection);
-      require('./lib/cursor')(self, cursor);
-      return cursor;
-    };
+    self.apos.define('apostrophe-places-cursor', require('./lib/cursor.js'));
 
     self.pruneMapLocations = function(items) {
       var result = _.map(items, function(item) {
