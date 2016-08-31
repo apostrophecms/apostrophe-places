@@ -82,12 +82,6 @@ module.exports = {
       pruneMapLocations: self.pruneMapLocations
     });
 
-    self.find = function(req, criteria, projection) {
-      var cursor = superFind(req, criteria, projection);
-      require('./lib/cursor')(self, cursor);
-      return cursor;
-    };
-
     self.pruneMapLocations = function(items) {
       var result = _.map(items, function(item) {
         return _.pick(item, options.mapInfoBoxFields);
