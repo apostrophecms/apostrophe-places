@@ -103,7 +103,7 @@ module.exports = {
       apos: self.apos
     });
 
-    self.beforeSave = function(req, piece, callback) {
+    self.beforeSave = function(req, piece, options, callback) {
       return self.geocoder.geocodePiece(piece, true, callback);
     };
   }
