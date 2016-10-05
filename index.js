@@ -96,9 +96,14 @@ module.exports = {
       // return cursor.upcoming(true);
     };
 
+    if(!options.key) {
+      console.log('WARNING: You need to provide a Google maps API key in your options in order for this module to work in the wild');
+    }
+
     self.geocoder = geocoder({
       rateLimit: options.rateLimit,
       dailyLimit: options.dailyLimit,
+      key: options.key,
       instance: self.name,
       apos: self.apos
     });
