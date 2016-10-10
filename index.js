@@ -103,7 +103,7 @@ module.exports = {
     self.geocoder = geocoder({
       rateLimit: options.rateLimit,
       dailyLimit: options.dailyLimit,
-      key: options.key,
+      apiKey: options.key || options.apiKey,
       instance: self.name,
       apos: self.apos
     });
