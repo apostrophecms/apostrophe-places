@@ -24,4 +24,6 @@ A `geo()` filter is available on the cursors returned by the `find` method of `a
 
 You may combine it with the `maxDistance` (in meters), `maxKm` and/or `maxMiles` filters.
 
+Hint: pass it the `geo` property of a place and you'll get back other places sorted by distance. You'll want to exclude the original place from that list via criteria like `{ _id: { $ne: req.data.piece._id }}`.
+
 When `geo()` is invoked, distance becomes the sort order, overriding all other sorts. If `geo()` is present, `search()` for text is still allowed but a simplified regex search is used to work around the limitations of MongoDB.
