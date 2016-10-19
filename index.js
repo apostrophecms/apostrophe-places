@@ -21,14 +21,22 @@ module.exports = {
     directory: 'lib/modules'
   },
 
-  afterConstruct: function(self) {
+  afterConstruct: function(self, callback) {
 
     if (!(self.options && self.options.map && self.options.map.browser && self.options.map.browser.key)) {
       console.error('*** Beginning July 2016 Google REQUIRES an API key for all new domains.');
-      console.error('Make sure you get one and configure the "key" option to the');
-      console.error('apostrophe-places module.');
-      console.error('');
-      console.error('Otherwise it will work in dev & staging but FAIL in production.');
+      console.error('Make sure you get one and configure the "key" options for both the server and');
+      console.error('the browser:\n\n');
+      console.error(JSON.stringify({
+        key: 'your server key here',
+        map: {
+          browser: {
+            key: 'your browser key here'
+          }
+        }
+      } , null, '  '));
+      console.error('\n\n');
+      console.error('Otherwise it may work in dev & staging but WILL FAIL in production.');
     }
 
     self.pushAsset('script', 'always', { when: 'always' });
@@ -55,6 +63,8 @@ module.exports = {
     self.apos.app.post(self.action + '/infoBox', function(req, res) {
       return res.send(self.render(req, '_infoBox', { item: req.body }));
     });
+    
+    return self.ensureIndex(callback);
   },
 
   beforeConstruct: function(self, options) {
@@ -110,6 +120,14 @@ module.exports = {
 
     self.beforeSave = function(req, piece, options, callback) {
       return self.geocoder.geocodePiece(piece, true, callback);
+    };
+    
+    // Ensure there is a 2dsphere index for the `geo` property of a doc. Note that this means
+    // all docs in a project utilizing this module must use a property named `geo` only for a
+    // geoJSON point (if they have such a property at all).
+
+    self.ensureIndex = function(callback) {
+      return self.apos.docs.db.ensureIndex({ geo: '2dsphere' }, { safe: true }, callback);
     };
   }
 };
