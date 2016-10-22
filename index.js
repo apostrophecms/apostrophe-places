@@ -1,6 +1,22 @@
 var _ = require('lodash')
-  , async = require('async')
-  , geocoder = require('./lib/geocoder');
+  , async = require('async');
+
+// The `apostrophe-places` module provides map locations (pieces with geolocation).
+//
+// ### options
+//
+// `dailyLimit`: defaults to `2500`, Google's free limit
+//
+// `rateLimit`: defaults to `10` (per second), Google's free limit
+//
+// `apiKey`: MUST be provided. Google will not geocode for new domains without one
+//
+// `cacheLifetime`: how long to cache coordinates corresponding to addresses, in seconds.
+// Defaults to `86400` (one day). Street addresses don't move around much.
+//
+// `geocoder`: passed on directly to the `apostrophe-places-geocoder` instance (or the
+// subclass corresponding to your subclass), which in turn passes them on to the `node-geocoder`
+// npm module.
 
 module.exports = {
   name: 'apostrophe-place',
@@ -64,7 +80,10 @@ module.exports = {
       return res.send(self.render(req, '_infoBox', { item: req.body }));
     });
     
-    return self.ensureIndex(callback);
+    return async.series([
+      self.ensureIndex,
+      self.enableGeocoder
+    ], callback);
   },
 
   beforeConstruct: function(self, options) {
@@ -110,24 +129,75 @@ module.exports = {
       console.log('WARNING: You need to provide a Google maps API key in your options in order for this module to work in the wild');
     }
 
-    self.geocoder = geocoder({
-      rateLimit: options.rateLimit,
-      dailyLimit: options.dailyLimit,
-      apiKey: options.key || options.apiKey,
-      instance: self.name,
-      apos: self.apos
-    });
-
-    self.beforeSave = function(req, piece, options, callback) {
-      return self.geocoder.geocodePiece(piece, true, callback);
-    };
+    // self.beforeSave = function(req, piece, options, callback) {
+    //   return self.geocoder.geocodePiece(piece, callback);
+    // };
     
     // Ensure there is a 2dsphere index for the `geo` property of a doc. Note that this means
     // all docs in a project utilizing this module must use a property named `geo` only for a
     // geoJSON point (if they have such a property at all).
 
     self.ensureIndex = function(callback) {
-      return self.apos.docs.db.ensureIndex({ geo: '2dsphere' }, { safe: true }, callback);
+
+      return async.series([
+        fixType,
+        ensureIndex
+      ], callback);
+
+      // Cope with projects where the "type" property of the geo object is somehow missing.
+      // Otherwise the index will crash. TODO: consider removing this later, it should never have been
+      // necessary. It can't be a migration because of chicken and egg issues.
+
+      function fixType(callback) {
+        return self.apos.docs.db.update({
+          type: self.name,
+          geo: { $type: 3 },
+          'geo.type': { $exists: 0 }
+        }, {
+          $set: {
+            'geo.type': 'Point'
+          }
+        }, {
+          multi: true
+        },
+        callback);
+      }
+
+      function ensureIndex(callback) {
+        return self.apos.docs.db.ensureIndex({ geo: '2dsphere' }, { safe: true }, callback);
+      }
+
     };
+    
+    self.defineRelatedType('geocoder', {
+      stop: 'apostrophe-module'
+    });
+    
+    // Sets self.geocoder to an instance of `apostrophe-places-geocoder` (or the appropriate subclass for your subclass).
+    // Passes on the `rateLimit`, `dailyLimit`, `key` and `name` options, plus all properties of the
+    // `geocoder` option if you provide one
+
+    self.enableGeocoder = function(callback) {
+      var geocoderOptions = self.options.geocoder || {};
+      if (options.rateLimit !== undefined) {
+        geocoderOptions.rateLimit = options.rateLimit;
+      }
+      if (options.dailyLimit !== undefined) {
+        geocoderOptions.dailyLimit = options.dailyLimit;
+      }
+      _.defaults(geocoderOptions, {
+        apiKey: options.key || options.apiKey,
+        name: self.name,
+        apos: self.apos
+      });
+      return self.createRelatedType('geocoder', geocoderOptions, function(err, geocoder) {
+        if (err) {
+          return callback(err);
+        }
+        self.geocoder = geocoder;
+        return callback(null);
+      });
+    };
+
   }
 };
