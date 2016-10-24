@@ -129,9 +129,9 @@ module.exports = {
       console.log('WARNING: You need to provide a Google maps API key in your options in order for this module to work in the wild');
     }
 
-    // self.beforeSave = function(req, piece, options, callback) {
-    //   return self.geocoder.geocodePiece(piece, callback);
-    // };
+    self.beforeSave = function(req, piece, options, callback) {
+      return self.geocoder.geocodePiece(piece, callback);
+    };
     
     // Ensure there is a 2dsphere index for the `geo` property of a doc. Note that this means
     // all docs in a project utilizing this module must use a property named `geo` only for a
