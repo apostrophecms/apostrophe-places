@@ -93,8 +93,21 @@ module.exports = {
       {
         name: 'address',
         label: 'Address',
-        type: 'string'
-      }
+        type: 'string',
+        help: 'Must be a complete address unless latitude and longitude are specified.'
+      },
+      {
+        name: 'lat',
+        label: 'latitude',
+        type: 'float',
+        help: 'If omitted, the address will be looked up for you. West longitudes are negative.'
+      },
+      {
+        name: 'lng',
+        label: 'longitude',
+        type: 'float',
+        help: 'If omitted, the address will be looked up for you. North latitudes are positive.'
+      },
     ].concat(options.addFields || []);
 
     options.arrangeFields = _.merge([
