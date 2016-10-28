@@ -2,11 +2,12 @@ apos.define('apostrophe-places-map', {
   extend: 'apostrophe-context',
 
   afterConstruct: function(self) {
-
+    self.enableInfoBoxClicks();
   },
 
   construct: function(self, options) {
     self.mapsToLoad = [];
+    self.mapsById = {};
     self.googleLoading = false;
     self.googleLoaded = false;
 
@@ -64,7 +65,7 @@ apos.define('apostrophe-places-map', {
           return self.renderItems(map, callback);
         }
       ]);
-    }
+    };
 
     self.geocodeAll = function(items, callback) {
       // For points not geocoded server side
@@ -86,6 +87,14 @@ apos.define('apostrophe-places-map', {
       map.$el = $(map.sel); // the jQuery element
       map.el = map.$el[0]; // the plain DOM element
       map.filterBy = map.options.filterBy;
+
+      
+      map._id = map.options._id || apos.utils.generateId();
+      self.mapsById[map._id] = map;
+      map.itemsById = {};
+      _.each(map.items, function(item) {
+        map.itemsById[item._id] = item;
+      });
 
       map.googleMap = new google.maps.Map(map.el, {
         zoom: map.options.zoom || 12,
@@ -229,22 +238,10 @@ apos.define('apostrophe-places-map', {
       }
 
       self.generateMarker(item, map);
-
-      var selector = '[data-location-id="' + item._id + '"]';
-      $('body').on('click', selector, function() {
-        self.activateInfoBox(item, map);
-        return false;
-      });
-
-      if(map.options.infoBox) {
-        google.maps.event.addListener(item.marker, 'click', function() {
-          return self.activateInfoBox(item, map);
-        });
-      }
     };
 
     self.generateMarker = function(item, map) {
-      var markerHTML = self.generateMarkerHTML(item);
+      var markerHTML = self.generateMarkerHTML(item, map);
 
       var coords;
       // If the address is already a coordinate pair ignore any geocoding result and use it directly
@@ -272,9 +269,9 @@ apos.define('apostrophe-places-map', {
 
     // Overridable hook to provide project level map marker.
 
-    self.generateMarkerHTML = function(item) {
+    self.generateMarkerHTML = function(item, map) {
       var markerHTML = document.createElement('DIV');
-          markerHTML.innerHTML = '<div class="apos-map-marker '+ apos.utils.cssName(item.category || '') +'"></div>';
+          markerHTML.innerHTML = '<div data-location-id="' + item._id + '" data-map-id="' + map._id + '" class="apos-map-marker '+ apos.utils.cssName(item.category || '') +'"></div>';
       return markerHTML;
     };
 
@@ -290,8 +287,10 @@ apos.define('apostrophe-places-map', {
       }
 
       // Clone the piece and remove the marker object, which will not
-      // play nicely with the the ajax request
-      var locationPiece = _.cloneDeep(item);
+      // play nicely with the the ajax request. But don't clone deep,
+      // we are only interested in getting rid of one top level property
+      
+      var locationPiece = _.clone(item);
       delete locationPiece.marker;
 
       $.post(map.action + '/infoBox', locationPiece).done(function(markup) {
@@ -322,6 +321,25 @@ apos.define('apostrophe-places-map', {
         item.marker.content.firstChild.className += " active";
       });
     };
+    
+    self.enableInfoBoxClicks = function() {
+      $('body').on('click', '[data-location-id]', function() {
+        var locationId = $(this).attr('data-location-id');
+        var mapId = $(this).attr('data-map-id');
+        var map = self.mapsById[mapId];
+        if (!map) {
+          // Maybe another subclass handles it
+          return;
+        }
+        var item = map.itemsById[locationId];
+        if (!item) {
+          // Maybe another subclass handles it
+          return;
+        }
+        self.activateInfoBox(item, map);
+        return false;
+      });
+    };    
 
     self.allItemsInactive = function(map) {
       _.each(map.items, function(item) {
