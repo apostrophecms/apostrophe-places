@@ -88,8 +88,6 @@ apos.define('apostrophe-places-map', {
       map.el = map.$el[0]; // the plain DOM element
       map.filterBy = map.options.filterBy;
 
-      
-      map._id = map.options._id || apos.utils.generateId();
       self.mapsById[map._id] = map;
       map.itemsById = {};
       _.each(map.items, function(item) {
