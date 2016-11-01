@@ -98,14 +98,14 @@ module.exports = {
       },
       {
         name: 'lat',
-        label: 'latitude',
+        label: 'Latitude',
         type: 'float',
         def: null,
         help: 'If omitted, the address will be looked up for you. West longitudes are negative.'
       },
       {
         name: 'lng',
-        label: 'longitude',
+        label: 'Longitude',
         type: 'float',
         def: null,
         help: 'If omitted, the address will be looked up for you. North latitudes are positive.'
