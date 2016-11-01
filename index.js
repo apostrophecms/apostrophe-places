@@ -39,6 +39,8 @@ module.exports = {
 
   afterConstruct: function(self, callback) {
 
+    self.addNullIslandMigration();
+    
     if (!(self.options && self.options.map && self.options.map.browser && self.options.map.browser.key)) {
       console.error('*** Beginning July 2016 Google REQUIRES an API key for all new domains.');
       console.error('Make sure you get one and configure the "key" options for both the server and');
@@ -214,5 +216,30 @@ module.exports = {
       });
     };
 
+    self.addNullIslandMigration = function() {
+
+      self.apos.migrations.add(self.__meta.name + '.nullIsland', function(callback) {
+
+        var needed;
+
+        return self.apos.docs.db.update(
+          { type: self.name, lat: 0, lng: 0 }, 
+          { $set: { lat: null, lng: null } },
+          { multi: true },
+          function(err, result) {
+            if (err) {
+              return callback(err);
+            }
+            if (result && result.result && result.result.nModified > 0) {
+              console.log('Set lat and lng of ' + result.result.nModified + ' ' + self.name + ' docs to null rather than "Null Island" (0, 0)');
+            }
+            return callback(null);
+          }
+        );
+      }, {
+        safe: true
+      });
+
+    };
   }
 };
