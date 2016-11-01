@@ -100,12 +100,14 @@ module.exports = {
         name: 'lat',
         label: 'latitude',
         type: 'float',
+        def: null,
         help: 'If omitted, the address will be looked up for you. West longitudes are negative.'
       },
       {
         name: 'lng',
         label: 'longitude',
         type: 'float',
+        def: null,
         help: 'If omitted, the address will be looked up for you. North latitudes are positive.'
       },
     ].concat(options.addFields || []);
