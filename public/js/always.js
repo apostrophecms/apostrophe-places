@@ -140,6 +140,7 @@ apos.define('apostrophe-places-map', {
       _.each(map.items, function(item) {
         return self.renderItem(item, map);
       });
+      return setImmediate(callback);
     };
 
     /*
