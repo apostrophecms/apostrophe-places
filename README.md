@@ -5,7 +5,7 @@
 This module's API is not finalized but it is seeing production use. It provides a piece type for geographical places,
 a corresponding widget type, and pieces pages that provide maps.
 
-For new sites you MUST obtain Google Maps API keys for both the server and the browser and configure this module accordingly:
+For new sites you MUST obtain a Google Maps JavaScript API key with Google Maps Geolocation API enabled for both the server and the browser and configure the module accordingly:
 
 ```javascript
 {
