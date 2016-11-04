@@ -157,7 +157,7 @@ apos.define('apostrophe-places-map', {
         };
         // apos.log('maps: dynamically loading google maps API');
         // Google will call aposGoogleMapApiReady for us
-        self.addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry&sensor=false&callback=aposGoogleMapApiReady&key=' + self.options.key);
+        self.addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry&callback=aposGoogleMapApiReady&key=' + self.options.key);
       }
     };
 
