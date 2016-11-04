@@ -304,7 +304,7 @@ apos.define('apostrophe-places-map', {
           closeBoxURL: "//www.google.com/intl/en_us/mapfiles/close.gif",
           infoBoxClearance: new google.maps.Size(1, 1),
           pane: "floatPane",
-          enableEventPropagation: false
+          enableEventPropagation: true
         };
 
         item.infoBox = new InfoBox(boxOptions);
