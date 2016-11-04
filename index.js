@@ -17,6 +17,10 @@ var _ = require('lodash')
 // `geocoder`: passed on directly to the `apostrophe-places-geocoder` instance (or the
 // subclass corresponding to your subclass), which in turn passes them on to the `node-geocoder`
 // npm module.
+//
+// `infoBoxPositionX`: The X offset (in pixels) from the top left corner of the InfoBox (or the bottom left corner if the alignBottom property is true) to the map pixel corresponding to position.
+//
+// `infoBoxPositionY`: The Y offset (in pixels) from the top left corner of the InfoBox (or the bottom left corner if the alignBottom property is true) to the map pixel corresponding to position.
 
 module.exports = {
   name: 'apostrophe-place',
@@ -28,7 +32,9 @@ module.exports = {
     browser: {
       // Hey, you have to configure me or it'll fail in production!
       // Yes really
-      key: null
+      key: null,
+      infoBoxPositionX: 10,
+      infoBoxPositionY: -137
     }
   },
 
