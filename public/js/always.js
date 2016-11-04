@@ -296,7 +296,7 @@ apos.define('apostrophe-places-map', {
         var boxOptions = {
           content: markup,
           disableAutoPan: false,
-          pixelOffset: new google.maps.Size(10,-137),
+          pixelOffset: new google.maps.Size(self.options.infoBoxPositionX, self.options.infoBoxPositionY),
           boxStyle: {
             width: "280px"
           },
