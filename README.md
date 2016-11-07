@@ -12,7 +12,10 @@ For new sites you MUST obtain a Google Maps JavaScript API key with Google Maps 
   key: 'your server key here',
   map: {
     browser: {
-      key: 'your browser key here'
+      key: 'your browser key here',
+      // Defaults. Relative to marker clicked
+      infoBoxPositionX: 10,
+      infoBoxPositionY: -137
     }
   }
 }

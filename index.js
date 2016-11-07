@@ -32,9 +32,7 @@ module.exports = {
     browser: {
       // Hey, you have to configure me or it'll fail in production!
       // Yes really
-      key: null,
-      infoBoxPositionX: 10,
-      infoBoxPositionY: -137
+      key: null
     }
   },
 
@@ -97,6 +95,13 @@ module.exports = {
 
   beforeConstruct: function(self, options) {
     options.sort = { title: 1 };
+
+    if (options.map && options.map.browser) {
+      _.defaults(options.map.browser, {
+        infoBoxPositionX: 10,
+        infoBoxPositionY: -137
+      });
+    }
 
     options.addFields = [
       {
