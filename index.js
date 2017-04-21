@@ -193,7 +193,7 @@ module.exports = {
       }
 
       function ensureIndex(callback) {
-        return self.apos.docs.db.ensureIndex({ geo: '2dsphere' }, { safe: true }, callback);
+        return self.apos.docs.db.ensureIndex({ geo: '2dsphere' }, {}, callback);
       }
 
     };
