@@ -318,6 +318,9 @@ apos.define('apostrophe-places-map', {
       return self.generateInfoBox(item, map, function() {
         item.infoBox.open(map.googleMap, item.marker);
         item.marker.content.firstChild.className += " active";
+        google.maps.event.addListener(item.infoBox, 'closeclick', function(e) {
+          item.marker.content.firstChild.className = item.marker.content.firstChild.className.replace(' active', '');
+        });
       });
     };
     
@@ -338,7 +341,7 @@ apos.define('apostrophe-places-map', {
         self.activateInfoBox(item, map);
         return false;
       });
-    };    
+    };
 
     self.allItemsInactive = function(map) {
       _.each(map.items, function(item) {
