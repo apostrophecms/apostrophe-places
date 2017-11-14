@@ -12,6 +12,11 @@ apos.define('apostrophe-places-map', {
     self.googleLoaded = false;
 
     self.addMap = function(options) {
+      if (options.pageSingletonMap) {
+        apos.maps.recreatePageSingletonMap = function() {
+          return self.addMap(options);
+        });
+      }
       // Load Google maps API and extra libraries if needed.
       if(!self.googleLoading) {
         self.mapsToLoad.push(options);
@@ -475,6 +480,7 @@ apos.define('apostrophe-places-map', {
     };
 
     apos.maps = apos.maps || {};
+    apos.maps.recreatePageSingletonMap = function() {};
     apos.maps[options.name] = self;
   }
 });
