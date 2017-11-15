@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-places",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "Geocoded location content type for the Apostrophe content management system. Has google maps.",
   "main": "index.js",
   "scripts": {
