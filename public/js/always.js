@@ -12,6 +12,11 @@ apos.define('apostrophe-places-map', {
     self.googleLoaded = false;
 
     self.addMap = function(options) {
+      if (options.pageSingletonMap) {
+        apos.maps.recreatePageSingletonMap = function() {
+          return self.addMap(options);
+        };
+      }
       // Load Google maps API and extra libraries if needed.
       if(!self.googleLoading) {
         self.mapsToLoad.push(options);
@@ -288,7 +293,7 @@ apos.define('apostrophe-places-map', {
       // Clone the piece and remove the marker object, which will not
       // play nicely with the the ajax request. But don't clone deep,
       // we are only interested in getting rid of one top level property
-      
+
       var locationPiece = _.clone(item);
       delete locationPiece.marker;
 
@@ -323,7 +328,7 @@ apos.define('apostrophe-places-map', {
         });
       });
     };
-    
+
     self.enableInfoBoxClicks = function() {
       $('body').on('click', '[data-location-id]', function() {
         var locationId = $(this).attr('data-location-id');
@@ -475,6 +480,7 @@ apos.define('apostrophe-places-map', {
     };
 
     apos.maps = apos.maps || {};
+    apos.maps.recreatePageSingletonMap = function() {};
     apos.maps[options.name] = self;
   }
 });
